@@ -1,0 +1,8 @@
+.todo-list-item{
+	display: flex;
+	flex-direction: row;
+}
+
+.todo-list-task{
+	flex-grow: 1;
+}
