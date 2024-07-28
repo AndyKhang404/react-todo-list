@@ -1,15 +1,27 @@
-import "../styles/TodoListItem.css";
+// import "../styles/TodoListItem.css";
 
-const TodoListItem = () => {
+interface TodoListItemProps {
+  taskName: string;
+}
+
+const TodoListItem = ({ taskName }: TodoListItemProps) => {
   return (
-    <li className="list-group-item todo-list-item">
-      <p className="todo-list-task">Task</p>
-      <button type="button" className="btn btn-danger">
-        <i className="bi bi-trash-fill"></i>
-      </button>
-      <button type="button" className="btn btn-success">
-        <i className="bi bi-check2-square"></i>
-      </button>
+    <li className="list-group-item todo-list-item d-flex align-items-center px-1">
+      <span className="todo-list-task flex-fill mx-1 text-wrap">
+        {taskName}
+      </span>
+      <div
+        className="btn-group mx-1"
+        role="group"
+        aria-label="Finish or remove task"
+      >
+        <button type="button" className="btn btn-outline-danger">
+          <i className="bi bi-trash-fill"></i>
+        </button>
+        <button type="button" className="btn btn-outline-success">
+          <i className="bi bi-check2-square"></i>
+        </button>
+      </div>
     </li>
   );
 };
