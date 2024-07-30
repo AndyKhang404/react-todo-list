@@ -8,30 +8,39 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 
 function App() {
   const [todoListItems, setTodoListItems] = useState<TodoListItemType[]>([]);
+  const [finishedItems, setFinishedItems] = useState<TodoListItemType[]>([]);
   const addTodoListItem = (item: TodoListItemType) => {
     setTodoListItems([item].concat(todoListItems));
   };
   return (
     <div className="container-md">
       <TodoListInput onAddItem={addTodoListItem} />
+      <h4>
+        <strong>Pending tasks</strong>
+      </h4>
       <TodoList>
-        <h4>
-          <strong>Pending tasks</strong>
-        </h4>
         {todoListItems.length ? (
           todoListItems.map((item) => (
             <TodoListItem
               key={item.id}
               item={item}
               onRemove={() => {
-                setTodoListItems(todoListItems.filter((n) => n.id != item.id));
+                setTodoListItems(todoListItems.filter((n) => n.id !== item.id));
               }}
               onFinish={() => {
                 setTodoListItems(
-                  todoListItems.map((n) => {
-                    if (n.id == item.id) n.isFinished = true;
-                    return n;
+                  todoListItems.filter((n) => {
+                    return n.id !== item.id;
                   })
+                );
+                setFinishedItems(
+                  todoListItems
+                    .filter((n) => n.id === item.id)
+                    .map((n) => {
+                      n.isFinished = true;
+                      return n;
+                    })
+                    .concat(finishedItems)
                 );
               }}
             />
@@ -42,13 +51,25 @@ function App() {
           </span>
         )}
       </TodoList>
+      <h4>
+        <strong>Finished tasks</strong>
+      </h4>
       <TodoList>
-        <h4>
-          <strong>Finished tasks</strong>
-        </h4>
-        <span className="text-secondary text-opacity-50">
-          You haven't finished any tasks!
-        </span>
+        {finishedItems.length ? (
+          finishedItems.map((item) => (
+            <TodoListItem
+              key={item.id}
+              item={item}
+              onRemove={() => {
+                setFinishedItems(finishedItems.filter((n) => n.id !== item.id));
+              }}
+            />
+          ))
+        ) : (
+          <span className="text-secondary text-opacity-50">
+            You haven't finished any tasks!
+          </span>
+        )}
       </TodoList>
     </div>
   );

@@ -20,28 +20,35 @@ const TodoListInput = ({ onAddItem }: TodoListInputProps) => {
     setInputValue("");
   };
   return (
-    <div className="p-3 d-flex">
-      <input
-        type="text"
-        className="form-control flex-fill"
-        id="task-name-input"
-        placeholder="Add a new task..."
-        value={inputValue}
-        onChange={(e) => {
-          setInputValue(e.target.value);
-        }}
-        onKeyDown={(e) => {
-          e.key == "Enter" && addNewItem();
-        }}
-      />
-      <button
-        type="button"
-        className="btn btn-primary mx-3"
-        onClick={addNewItem}
-      >
-        <i className="bi bi-plus-lg"></i>
-      </button>
-    </div>
+    <form className="my-3">
+      <label htmlFor="basic-url" className="form-label">
+        What do you want to do?
+      </label>
+      <div className="input-group px-3">
+        <input
+          type="text"
+          className="form-control"
+          id="task-name-input"
+          placeholder="Add a new task..."
+          value={inputValue}
+          onChange={(e) => {
+            setInputValue(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            e.key == "Enter" && addNewItem();
+          }}
+        />
+        <select className="form-select" id="inputGroupSelect01">
+          <option selected>Priority...</option>
+          <option value="1">High</option>
+          <option value="2">Medium</option>
+          <option value="3">Low</option>
+        </select>
+        <button type="button" className="btn btn-primary" onClick={addNewItem}>
+          <i className="bi bi-plus-lg"></i>
+        </button>
+      </div>
+    </form>
   );
 };
 

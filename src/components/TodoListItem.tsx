@@ -7,13 +7,13 @@ export interface TodoListItemType {
 }
 interface TodoListItemProps {
   item: TodoListItemType;
-  onRemove: () => void;
-  onFinish: () => void;
+  onRemove?: () => void;
+  onFinish?: () => void;
 }
 
 const TodoListItem = ({ item, onRemove, onFinish }: TodoListItemProps) => {
   return (
-    <li className="list-group-item todo-list-item d-flex align-items-center px-1">
+    <li className="list-group-item todo-list-item d-flex align-items-start px-1">
       <span
         className={
           "todo-list-task flex-fill mx-1 text-wrap " +
@@ -29,20 +29,24 @@ const TodoListItem = ({ item, onRemove, onFinish }: TodoListItemProps) => {
         role="group"
         aria-label="Finish or remove task"
       >
-        <button
-          type="button"
-          className="btn btn-outline-danger"
-          onClick={onRemove}
-        >
-          <i className="bi bi-trash-fill"></i>
-        </button>
-        <button
-          type="button"
-          className="btn btn-outline-success"
-          onClick={onFinish}
-        >
-          <i className="bi bi-check2-square"></i>
-        </button>
+        {onRemove && (
+          <button
+            type="button"
+            className="btn btn-outline-danger"
+            onClick={onRemove}
+          >
+            <i className="bi bi-trash-fill"></i>
+          </button>
+        )}
+        {onFinish && (
+          <button
+            type="button"
+            className="btn btn-outline-success"
+            onClick={onFinish}
+          >
+            <i className="bi bi-check2-square"></i>
+          </button>
+        )}
       </div>
     </li>
   );
