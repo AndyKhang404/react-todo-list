@@ -1,21 +1,21 @@
-import { Dispatch, SetStateAction, useState } from "react";
-import { TodoListItemProps } from "./TodoListItem";
+import { useState } from "react";
+import { TodoListItemType } from "./TodoListItem";
 import { v4 as uuidv4 } from "uuid";
 
 interface TodoListInputProps {
-  items: TodoListItemProps[];
-  setItems: Dispatch<SetStateAction<TodoListItemProps[]>>;
+  onAddItem: (item: TodoListItemType) => void;
 }
 
-const TodoListInput = ({ items, setItems }: TodoListInputProps) => {
+const TodoListInput = ({ onAddItem }: TodoListInputProps) => {
   const [inputValue, setInputValue] = useState("");
   const addNewItem = () => {
     if (inputValue.trim()) {
-      const newItem: TodoListItemProps = {
-        task: { name: inputValue, id: uuidv4() },
+      const newItem: TodoListItemType = {
+        name: inputValue,
+        id: uuidv4(),
+        isFinished: false,
       };
-      console.log(newItem.task.id);
-      setItems([newItem].concat(items));
+      onAddItem(newItem);
     }
     setInputValue("");
   };
