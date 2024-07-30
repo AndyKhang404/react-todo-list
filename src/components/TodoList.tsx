@@ -1,21 +1,15 @@
-// import React from 'react'
-import TodoListItem from "./TodoListItem";
+import React from "react";
+// import TodoListItem from "./TodoListItem";
 // import "../styles/TodoList.css";
 
 interface TodoListProps {
-  items?: string[];
+  children?: React.ReactNode;
 }
 
-const TodoList = ({ items }: TodoListProps) => {
+const TodoList = ({ children }: TodoListProps) => {
   return (
     <div className="p-3">
-      <ul className="list-group todo-list">
-        {items?.length ? (
-          items.map((item) => <TodoListItem key={item} taskName={item} />)
-        ) : (
-          <span className="text-opacity-50">It's quite empty here...</span>
-        )}
-      </ul>
+      <ul className="list-group todo-list">{children}</ul>
     </div>
   );
 };

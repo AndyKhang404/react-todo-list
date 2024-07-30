@@ -1,14 +1,14 @@
 // import "../styles/TodoListItem.css";
 
-interface TodoListItemProps {
-  taskName: string;
+export interface TodoListItemProps {
+  task: { name: string; id: string };
 }
 
-const TodoListItem = ({ taskName }: TodoListItemProps) => {
+const TodoListItem = ({ task }: TodoListItemProps) => {
   return (
     <li className="list-group-item todo-list-item d-flex align-items-center px-1">
       <span className="todo-list-task flex-fill mx-1 text-wrap">
-        {taskName}
+        {task.name}
       </span>
       <div
         className="btn-group mx-1"
