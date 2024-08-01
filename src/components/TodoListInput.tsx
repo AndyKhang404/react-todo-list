@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { TodoListItemType } from "./TodoListItem";
 import { v4 as uuidv4 } from "uuid";
+// import "../styles/TodoListInput.css";
 
 interface TodoListInputProps {
   onAddItem: (item: TodoListItemType) => void;
@@ -8,6 +9,18 @@ interface TodoListInputProps {
 
 const TodoListInput = ({ onAddItem }: TodoListInputProps) => {
   const [inputValue, setInputValue] = useState("");
+  const today = () => {
+    let d = new Date();
+    const offset = d.getTimezoneOffset();
+    d = new Date(d.getTime() - offset * 60 * 1000);
+    return d.toISOString().split("T")[0];
+  };
+  // const isDate = (d: string) => {
+  //   const dateObj = new Date(d);
+  //   return dateObj instanceof Date && !isNaN(dateObj.valueOf());
+  // };
+  const [inputDateValue, setInputDateValue] = useState(today());
+  // const [invalidDate, setInvalidDate] = useState(false);
   const addNewItem = () => {
     if (inputValue.trim()) {
       const newItem: TodoListItemType = {
@@ -20,14 +33,12 @@ const TodoListInput = ({ onAddItem }: TodoListInputProps) => {
     setInputValue("");
   };
   return (
-    <form className="my-3">
-      <label htmlFor="basic-url" className="form-label">
-        What do you want to do?
-      </label>
+    <form className="my-3 border rounded bg-body-tertiary p-3">
+      <label className="form-label">What do you want to do?</label>
       <div className="input-group px-3">
-        <input
-          type="text"
-          className="form-control"
+        <textarea
+          // type="text"
+          className="form-control flex-grow-1"
           id="task-name-input"
           placeholder="Add a new task..."
           value={inputValue}
@@ -35,15 +46,38 @@ const TodoListInput = ({ onAddItem }: TodoListInputProps) => {
             setInputValue(e.target.value);
           }}
           onKeyDown={(e) => {
-            e.key == "Enter" && addNewItem();
+            if (e.key === "Enter") {
+              addNewItem();
+              e.preventDefault();
+              e.stopPropagation();
+            }
           }}
         />
-        <select className="form-select" id="inputGroupSelect01">
+      </div>
+      <label className="form-label">Due date (optional):</label>
+      <div className="input-group px-3">
+        {/* <select
+          className="form-select"
+          id="task-priority-select-input"
+          aria-label="Priority select"
+        >
           <option selected>Priority...</option>
           <option value="1">High</option>
           <option value="2">Medium</option>
           <option value="3">Low</option>
-        </select>
+        </select> */}
+        <input
+          type="date"
+          name="task-datetime-input"
+          id="task-datetime-input"
+          className="form-control"
+          value={inputDateValue}
+          onChange={(e) => {
+            setInputDateValue(e.target.value);
+            // setInvalidDate(!isDate(inputDateValue));
+          }}
+        />
+        {/* {invalidDate && <span>Invalid date!</span>} */}
         <button type="button" className="btn btn-primary" onClick={addNewItem}>
           <i className="bi bi-plus-lg"></i>
         </button>

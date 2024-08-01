@@ -13,65 +13,78 @@ function App() {
     setTodoListItems([item].concat(todoListItems));
   };
   return (
-    <div className="container-md">
-      <TodoListInput onAddItem={addTodoListItem} />
-      <h4>
-        <strong>Pending tasks</strong>
-      </h4>
-      <TodoList>
-        {todoListItems.length ? (
-          todoListItems.map((item) => (
-            <TodoListItem
-              key={item.id}
-              item={item}
-              onRemove={() => {
-                setTodoListItems(todoListItems.filter((n) => n.id !== item.id));
-              }}
-              onFinish={() => {
-                setTodoListItems(
-                  todoListItems.filter((n) => {
-                    return n.id !== item.id;
-                  })
-                );
-                setFinishedItems(
-                  todoListItems
-                    .filter((n) => n.id === item.id)
-                    .map((n) => {
-                      n.isFinished = true;
-                      return n;
+    <>
+      <nav className="navbar navbar-expand-lg bg-body-tertiary border-bottom">
+        <div className="container-fluid">
+          <a className="navbar-brand" href="#">
+            Todo List
+          </a>
+        </div>
+      </nav>
+      <div className="container-md">
+        <TodoListInput onAddItem={addTodoListItem} />
+        <h4>
+          <strong>Pending tasks</strong>
+        </h4>
+        <TodoList>
+          {todoListItems.length ? (
+            todoListItems.map((item) => (
+              <TodoListItem
+                key={item.id}
+                item={item}
+                onRemove={() => {
+                  setTodoListItems(
+                    todoListItems.filter((n) => n.id !== item.id)
+                  );
+                }}
+                onFinish={() => {
+                  setTodoListItems(
+                    todoListItems.filter((n) => {
+                      return n.id !== item.id;
                     })
-                    .concat(finishedItems)
-                );
-              }}
-            />
-          ))
-        ) : (
-          <span className="text-secondary text-opacity-50">
-            It's quite empty here...
-          </span>
-        )}
-      </TodoList>
-      <h4>
-        <strong>Finished tasks</strong>
-      </h4>
-      <TodoList>
-        {finishedItems.length ? (
-          finishedItems.map((item) => (
-            <TodoListItem
-              key={item.id}
-              item={item}
-              onRemove={() => {
-                setFinishedItems(finishedItems.filter((n) => n.id !== item.id));
-              }}
-            />
-          ))
-        ) : (
-          <span className="text-secondary text-opacity-50">
-            You haven't finished any tasks!
-          </span>
-        )}
-      </TodoList>
-    </div>
+                  );
+                  setFinishedItems(
+                    todoListItems
+                      .filter((n) => n.id === item.id)
+                      .map((n) => {
+                        n.isFinished = true;
+                        return n;
+                      })
+                      .concat(finishedItems)
+                  );
+                }}
+              />
+            ))
+          ) : (
+            <span className="text-secondary text-opacity-50">
+              It's quite empty here...
+            </span>
+          )}
+        </TodoList>
+        <h4>
+          <strong>Finished tasks</strong>
+        </h4>
+        <TodoList>
+          {finishedItems.length ? (
+            finishedItems.map((item) => (
+              <TodoListItem
+                key={item.id}
+                item={item}
+                onRemove={() => {
+                  setFinishedItems(
+                    finishedItems.filter((n) => n.id !== item.id)
+                  );
+                }}
+              />
+            ))
+          ) : (
+            <span className="text-secondary text-opacity-50">
+              You haven't finished any tasks!
+            </span>
+          )}
+        </TodoList>
+      </div>
+    </>
   );
 }
 
