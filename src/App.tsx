@@ -10,7 +10,9 @@ function App() {
   const [todoListItems, setTodoListItems] = useState<TodoListItemType[]>([]);
   const [finishedItems, setFinishedItems] = useState<TodoListItemType[]>([]);
   const addTodoListItem = (item: TodoListItemType) => {
-    setTodoListItems([item].concat(todoListItems));
+    setTodoListItems(
+      [item].concat(todoListItems).sort((a, b) => b.priority - a.priority)
+    );
   };
   return (
     <>
@@ -79,7 +81,7 @@ function App() {
             ))
           ) : (
             <span className="text-secondary text-opacity-50">
-              You haven't finished any tasks!
+              You have finished all tasks!
             </span>
           )}
         </TodoList>

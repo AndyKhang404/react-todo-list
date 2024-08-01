@@ -20,6 +20,7 @@ const TodoListInput = ({ onAddItem }: TodoListInputProps) => {
   //   return dateObj instanceof Date && !isNaN(dateObj.valueOf());
   // };
   const [inputDateValue, setInputDateValue] = useState(today());
+  const [inputPriorityValue, setInputPriorityValue] = useState(0);
   // const [invalidDate, setInvalidDate] = useState(false);
   const addNewItem = () => {
     if (inputValue.trim()) {
@@ -27,60 +28,77 @@ const TodoListInput = ({ onAddItem }: TodoListInputProps) => {
         name: inputValue,
         id: uuidv4(),
         isFinished: false,
+        priority: inputPriorityValue,
       };
       onAddItem(newItem);
     }
     setInputValue("");
   };
   return (
-    <form className="my-3 border rounded bg-body-tertiary p-3">
-      <label className="form-label">What do you want to do?</label>
-      <div className="input-group px-3">
-        <textarea
-          // type="text"
-          className="form-control flex-grow-1"
-          id="task-name-input"
-          placeholder="Add a new task..."
-          value={inputValue}
-          onChange={(e) => {
-            setInputValue(e.target.value);
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              addNewItem();
-              e.preventDefault();
-              e.stopPropagation();
-            }
-          }}
-        />
+    <form className="my-3 border rounded bg-body-tertiary p-3 container">
+      <div className="row">
+        <label className="form-label">What do you want to do?</label>
+        <div className="input-group">
+          <textarea
+            // type="text"
+            className="form-control flex-grow-1"
+            id="task-name-input"
+            placeholder="Add a new task..."
+            value={inputValue}
+            onChange={(e) => {
+              setInputValue(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                addNewItem();
+                e.preventDefault();
+                e.stopPropagation();
+              }
+            }}
+            style={{ resize: "none" }}
+          />
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={addNewItem}
+          >
+            <i className="bi bi-plus-lg"></i>
+          </button>
+        </div>
       </div>
-      <label className="form-label">Due date (optional):</label>
-      <div className="input-group px-3">
-        {/* <select
-          className="form-select"
-          id="task-priority-select-input"
-          aria-label="Priority select"
-        >
-          <option selected>Priority...</option>
-          <option value="1">High</option>
-          <option value="2">Medium</option>
-          <option value="3">Low</option>
-        </select> */}
-        <input
-          type="date"
-          name="task-datetime-input"
-          id="task-datetime-input"
-          className="form-control"
-          value={inputDateValue}
-          onChange={(e) => {
-            setInputDateValue(e.target.value);
-            // setInvalidDate(!isDate(inputDateValue));
-          }}
-        />
-        {/* {invalidDate && <span>Invalid date!</span>} */}
-        <button type="button" className="btn btn-primary" onClick={addNewItem}>
-          <i className="bi bi-plus-lg"></i>
-        </button>
+      <div className="row">
+        <div className="col">
+          <label className="form-label">Priority:</label>
+          <select
+            className="form-select"
+            id="task-priority-select-input"
+            aria-label="Priority select"
+            value={inputPriorityValue}
+            onChange={(e) => {
+              setInputPriorityValue(parseInt(e.target.value));
+            }}
+          >
+            <option value="0">None</option>
+            <option value="1">Low</option>
+            <option value="2">Medium</option>
+            <option value="3">High</option>
+          </select>
+        </div>
+        <div className="col">
+          <label className="form-label">Due date:</label>
+          <input
+            type="date"
+            name="task-datetime-input"
+            id="task-datetime-input"
+            className="form-control"
+            value={inputDateValue}
+            onChange={(e) => {
+              setInputDateValue(e.target.value);
+              // setInvalidDate(!isDate(inputDateValue));
+            }}
+          />
+          <span className="text-danger">Invalid date</span>
+        </div>
       </div>
     </form>
   );

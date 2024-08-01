@@ -4,7 +4,11 @@ export interface TodoListItemType {
   name: string;
   id: string;
   isFinished: boolean;
+  priority: number;
 }
+
+const priorityColor = ["", "#2C78BF", "#ff9100", "#EF2F27"];
+
 interface TodoListItemProps {
   item: TodoListItemType;
   onRemove?: () => void;
@@ -14,6 +18,24 @@ interface TodoListItemProps {
 const TodoListItem = ({ item, onRemove, onFinish }: TodoListItemProps) => {
   return (
     <li className="list-group-item todo-list-item d-flex align-items-start px-1">
+      {item.priority === 1 && (
+        <i
+          className="bi bi-info-circle-fill mx-1"
+          style={{ color: priorityColor[item.priority] }}
+        ></i>
+      )}
+      {item.priority === 2 && (
+        <i
+          className="bi bi-exclamation-triangle-fill mx-1"
+          style={{ color: priorityColor[item.priority] }}
+        ></i>
+      )}
+      {item.priority === 3 && (
+        <i
+          className="bi bi-exclamation-octagon-fill mx-1"
+          style={{ color: priorityColor[item.priority] }}
+        ></i>
+      )}
       <span
         className={
           "todo-list-task flex-fill mx-1 text-wrap " +
@@ -21,6 +43,7 @@ const TodoListItem = ({ item, onRemove, onFinish }: TodoListItemProps) => {
             ? "text-success text-decoration-line-through text-opacity-50"
             : "")
         }
+        style={{ color: priorityColor[item.priority] }}
       >
         {item.name}
       </span>
