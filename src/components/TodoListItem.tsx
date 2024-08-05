@@ -1,16 +1,16 @@
 // import "../styles/TodoListItem.css";
-
-export interface TodoListItemType {
-  name: string;
-  id: string;
-  isFinished: boolean;
-  priority: number;
-}
+import { DBTodoItems } from "../db";
+// export interface TodoListItemType {
+//   name: string;
+//   id: string;
+//   isFinished: boolean;
+//   priority: number;
+// }
 
 const priorityColor = ["", "#2C78BF", "#ff9100", "#EF2F27"];
 
 interface TodoListItemProps {
-  item: TodoListItemType;
+  item: DBTodoItems;
   onRemove?: () => void;
   onFinish?: () => void;
 }
