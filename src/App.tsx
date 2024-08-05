@@ -1,33 +1,28 @@
 // import { useState } from "react";
 import TodoList from "./components/TodoList";
 import TodoListItem from "./components/TodoListItem";
-// import { TodoListItemType } from "./components/TodoListItem";
 import TodoListInput from "./components/TodoListInput";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "./db";
+import { dateStringComp } from "./date_helper";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 function App() {
   const unfinishedItems = useLiveQuery(async () => {
     const t = (await db.tasks.where("isFinished").equals(0).toArray()).sort(
-      (a, b) => b.priority - a.priority
+      (a, b) => {
+        const comp = b.priority - a.priority;
+        if (comp != 0) return comp;
+        return dateStringComp(a.date, b.date);
+      }
     );
     return t;
   });
   const finishedItems = useLiveQuery(async () => {
-    const t = (await db.tasks.where("isFinished").equals(1).toArray()).sort(
-      (a, b) => b.priority - a.priority
-    );
+    const t = await db.tasks.where("isFinished").equals(1).toArray();
     return t;
   });
-  // const [todoListItems, setTodoListItems] = useState<TodoListItemType[]>([]);
-  // const [finishedItems, setFinishedItems] = useState<TodoListItemType[]>([]);
-  // const addTodoListItem = (item: TodoListItemType) => {
-  //   setTodoListItems(
-  //     [item].concat(todoListItems).sort((a, b) => b.priority - a.priority)
-  //   );
-  // };
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-body-tertiary border-bottom">
@@ -49,7 +44,7 @@ function App() {
                 key={item.id}
                 item={item}
                 onRemove={() => {
-                  db.tasks.where("taskId").equals(item.taskId).delete;
+                  db.tasks.where("taskId").equals(item.taskId).delete();
                 }}
                 onFinish={() => {
                   db.tasks.update(item.id, { isFinished: 1 });

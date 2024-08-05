@@ -1,11 +1,6 @@
 // import "../styles/TodoListItem.css";
 import { DBTodoItems } from "../db";
-// export interface TodoListItemType {
-//   name: string;
-//   id: string;
-//   isFinished: boolean;
-//   priority: number;
-// }
+import { durationString } from "../date_helper";
 
 const priorityColor = ["", "#2C78BF", "#ff9100", "#EF2F27"];
 
@@ -47,6 +42,8 @@ const TodoListItem = ({ item, onRemove, onFinish }: TodoListItemProps) => {
       >
         {item.name}
       </span>
+      <span className="badge text-bg-primary">{durationString(item.date)}</span>
+      {/* <span className="badge text-bg-danger">{item.date}</span> */}
       <div
         className="btn-group mx-1"
         role="group"

@@ -5,12 +5,13 @@ interface DBTodoItems{
 	name:string;
 	taskId:string;
 	isFinished:number;
+	date:string;
 	priority:number;
 }
 
 const db = new Dexie("TodoListDatabase") as Dexie & {tasks:EntityTable<DBTodoItems,'id'>};
 
-db.version(1).stores({tasks:'++id,name,taskId,isFinished,priority'});
+db.version(1).stores({tasks:'++id,name,taskId,isFinished,date,priority'});
 
 export type {DBTodoItems};
 export {db};

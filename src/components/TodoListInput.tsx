@@ -1,39 +1,41 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../db";
+import { today, isDate } from "../date_helper";
 // import "../styles/TodoListInput.css";
 
 // interface TodoListInputProps {
 //   onAddItem: (item: TodoListItemType) => void;
 // }
 
-const TodoListInput = (/*{ onAddItem }: TodoListInputProps*/) => {
+const TodoListInput = () => {
   const [inputValue, setInputValue] = useState("");
-  const today = () => {
-    let d = new Date();
-    const offset = d.getTimezoneOffset();
-    d = new Date(d.getTime() - offset * 60 * 1000);
-    return d.toISOString().split("T")[0];
-  };
-  // const isDate = (d: string) => {
-  //   const dateObj = new Date(d);
-  //   return dateObj instanceof Date && !isNaN(dateObj.valueOf());
-  // };
   const [inputDateValue, setInputDateValue] = useState(today());
   const [inputPriorityValue, setInputPriorityValue] = useState(0);
   const [status, setStatus] = useState<[number, string]>([0, ""]);
   async function addNewItem() {
     if (inputValue.trim()) {
+      if (!isDate(inputDateValue)) {
+        setStatus([1, "Invalid date"]);
+        setTimeout(() => {
+          setStatus([0, ""]);
+        }, 2000);
+        return;
+      }
       try {
         const newItem = {
           name: inputValue,
           taskId: uuidv4(),
           isFinished: 0,
+          date: inputDateValue,
           priority: inputPriorityValue,
         };
         await db.tasks.add(newItem);
       } catch (error) {
         setStatus([1, "Failed to add task"]);
+        setTimeout(() => {
+          setStatus([0, ""]);
+        }, 2000);
       }
     }
     setInputValue("");
