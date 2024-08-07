@@ -20,6 +20,8 @@ npm install
 ```
 to install all dependencies of the project.
 
+---
+
 ### Build
 
 - For developing or testing, run:
@@ -33,6 +35,8 @@ to enable hot reload.
 npm run build
 ```
 Vite will automatically build and output to `dist/` directory. If you want to change the output directory or any build configuration in general, consult [Vite config](https://vitejs.dev/config/) page.
+
+---
 
 ### Run
 You can use
