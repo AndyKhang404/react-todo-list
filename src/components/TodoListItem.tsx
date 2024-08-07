@@ -1,6 +1,5 @@
-// import "../styles/TodoListItem.css";
+import { durationTilTodayString } from "../date_helper";
 import { DBTodoItems } from "../db";
-import { durationString } from "../date_helper";
 
 const priorityColor = ["", "#2C78BF", "#ff9100", "#EF2F27"];
 
@@ -11,6 +10,7 @@ interface TodoListItemProps {
 }
 
 const TodoListItem = ({ item, onRemove, onFinish }: TodoListItemProps) => {
+  const dateBadge = durationTilTodayString(item.date);
   return (
     <li className="list-group-item todo-list-item d-flex align-items-start px-1">
       {item.priority === 1 && (
@@ -35,15 +35,28 @@ const TodoListItem = ({ item, onRemove, onFinish }: TodoListItemProps) => {
         className={
           "todo-list-task flex-fill mx-1 text-wrap " +
           (item.isFinished
-            ? "text-success text-decoration-line-through text-opacity-50"
+            ? "text-success text-decoration-line-through text-opacity-80"
+            : "") +
+          (dateBadge[0] == 2
+            ? "text-secondary text-decoration-line-through text-opacity-80"
             : "")
         }
-        style={{ color: priorityColor[item.priority] }}
+        style={dateBadge[0] != 2 ? { color: priorityColor[item.priority] } : {}}
       >
         {item.name}
       </span>
-      <span className="badge text-bg-primary">{durationString(item.date)}</span>
-      {/* <span className="badge text-bg-danger">{item.date}</span> */}
+      {!item.isFinished && (
+        <span
+          className={
+            "badge " +
+            ["text-bg-primary", "text-bg-danger", "text-bg-secondary"][
+              dateBadge[0]
+            ]
+          }
+        >
+          {dateBadge[1]}
+        </span>
+      )}
       <div
         className="btn-group mx-1"
         role="group"

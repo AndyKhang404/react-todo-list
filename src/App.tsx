@@ -1,10 +1,10 @@
-// import { useState } from "react";
 import TodoList from "./components/TodoList";
 import TodoListItem from "./components/TodoListItem";
 import TodoListInput from "./components/TodoListInput";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "./db";
-import { dateStringComp } from "./date_helper";
+import { durationTilToday } from "./date_helper";
+import { getTheme, setTheme } from "./theme_helper";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
@@ -12,9 +12,12 @@ function App() {
   const unfinishedItems = useLiveQuery(async () => {
     const t = (await db.tasks.where("isFinished").equals(0).toArray()).sort(
       (a, b) => {
-        const comp = b.priority - a.priority;
-        if (comp != 0) return comp;
-        return dateStringComp(a.date, b.date);
+        const aOverdue = durationTilToday(a.date) < 0;
+        const bOverdue = durationTilToday(b.date) < 0;
+        let priorityComp = b.priority - a.priority;
+        if (aOverdue) priorityComp += 10;
+        if (bOverdue) priorityComp -= 10;
+        return priorityComp;
       }
     );
     return t;
@@ -23,6 +26,7 @@ function App() {
     const t = await db.tasks.where("isFinished").equals(1).toArray();
     return t;
   });
+  let darkTheme = getTheme() === "dark";
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-body-tertiary border-bottom">
@@ -30,6 +34,17 @@ function App() {
           <a className="navbar-brand" href="#">
             Todo List
           </a>
+          <button
+            type="button"
+            className="btn"
+            onClick={() => {
+              if (!darkTheme) setTheme("dark");
+              else setTheme("light");
+              darkTheme = !darkTheme;
+            }}
+          >
+            <i className="bi bi-circle-half"></i>
+          </button>
         </div>
       </nav>
       <div className="container-md">

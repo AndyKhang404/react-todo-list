@@ -5,7 +5,7 @@ interface DBTodoItems{
 	name:string;
 	taskId:string;
 	isFinished:number;
-	date:string;
+	date:Date;
 	priority:number;
 }
 

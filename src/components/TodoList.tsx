@@ -1,6 +1,4 @@
 import React from "react";
-// import TodoListItem from "./TodoListItem";
-// import "../styles/TodoList.css";
 
 interface TodoListProps {
   children?: React.ReactNode;

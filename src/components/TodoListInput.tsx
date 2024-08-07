@@ -2,11 +2,6 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../db";
 import { today, isDate } from "../date_helper";
-// import "../styles/TodoListInput.css";
-
-// interface TodoListInputProps {
-//   onAddItem: (item: TodoListItemType) => void;
-// }
 
 const TodoListInput = () => {
   const [inputValue, setInputValue] = useState("");
@@ -27,7 +22,7 @@ const TodoListInput = () => {
           name: inputValue,
           taskId: uuidv4(),
           isFinished: 0,
-          date: inputDateValue,
+          date: new Date(inputDateValue),
           priority: inputPriorityValue,
         };
         await db.tasks.add(newItem);
@@ -42,7 +37,7 @@ const TodoListInput = () => {
   }
   return (
     <form className="my-3 border rounded bg-body-tertiary p-3 container">
-      <div className="row">
+      <div className="row mb-2">
         <label className="form-label">What do you want to do?</label>
         <div className="input-group">
           <textarea
