@@ -11,6 +11,7 @@ interface TodoListItemProps {
 
 const TodoListItem = ({ item, onRemove, onFinish }: TodoListItemProps) => {
   const dateBadge = durationTilTodayString(item.date);
+  console.log(item.name);
   return (
     <li className="list-group-item todo-list-item d-flex align-items-start px-1">
       {item.priority === 1 && (
@@ -33,7 +34,7 @@ const TodoListItem = ({ item, onRemove, onFinish }: TodoListItemProps) => {
       )}
       <span
         className={
-          "todo-list-task flex-fill mx-1 text-wrap " +
+          "todo-list-task flex-fill mx-1 " +
           (item.isFinished
             ? "text-success text-decoration-line-through text-opacity-80"
             : "") +
@@ -41,7 +42,11 @@ const TodoListItem = ({ item, onRemove, onFinish }: TodoListItemProps) => {
             ? "text-secondary text-decoration-line-through text-opacity-80"
             : "")
         }
-        style={dateBadge[0] != 2 ? { color: priorityColor[item.priority] } : {}}
+        style={
+          dateBadge[0] != 2
+            ? { color: priorityColor[item.priority], whiteSpace: "pre-line" }
+            : { whiteSpace: "pre-line" }
+        }
       >
         {item.name}
       </span>

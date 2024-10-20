@@ -50,7 +50,7 @@ const TodoListInput = () => {
               setInputValue(e.target.value);
             }}
             onKeyDown={(e) => {
-              if (e.key === "Enter") {
+              if (e.key === "Enter" && !(e.shiftKey || e.ctrlKey)) {
                 addNewItem();
                 e.preventDefault();
                 e.stopPropagation();
